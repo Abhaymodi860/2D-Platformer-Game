@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float speed = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
         animator.SetFloat("Speed", Mathf.Abs(speed));
 
         Vector3 scale = transform.localScale;
@@ -27,5 +28,19 @@ public class PlayerController : MonoBehaviour
             scale.x = Mathf.Abs(scale.x);
         }
         transform.localScale = scale;
+
+        bool isJumping = false;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+        }
+        animator.SetBool("Jump", isJumping);
+
+        bool isCrouching = false;
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            isCrouching = true;
+        }
+        animator.SetBool("Crouch", isCrouching);
     }
 }
