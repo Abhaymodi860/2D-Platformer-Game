@@ -5,6 +5,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Animator animator;
+    private Rigidbody2D rb2d;
+    public float speed;
+    public float jump;
+
+    private void Awake()
+    {
+        Debug.Log("Player Controller Awake");
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -15,26 +24,62 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float speed = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        animator.SetFloat("Speed", Mathf.Abs(speed));
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Jump");
+
+        MoveCharacter(horizontal, vertical);
+
+        PlayeMovementAnimation(horizontal, vertical);
+    }
+
+    void MoveCharacter(float horizontal, float vertical)
+    {
+        // moving horizontal
+        Vector3 position = transform.position;
+        position.x += horizontal * speed * Time.deltaTime;
+        transform.position = position;
+
+        // moving vertical
+        if(vertical > 0)
+        {
+            rb2d.AddForce(new Vector2(0f, jump), ForceMode2D.Impulse);
+        }
+    }
+
+    void PlayeMovementAnimation(float horizontal, float vertical)
+    {
+       
+
+        animator.SetFloat("Speed", Mathf.Abs(horizontal));
 
         Vector3 scale = transform.localScale;
-        if (speed < 0)
+        if (horizontal < 0)
         {
             scale.x = -1f * Mathf.Abs(scale.x);
-        } else if (speed > 0) 
+        }
+        else if (horizontal > 0)
         {
             scale.x = Mathf.Abs(scale.x);
         }
         transform.localScale = scale;
 
-        bool isJumping = false;
+       /* 
+        * bool isJumping = false;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
         }
         animator.SetBool("Jump", isJumping);
+       */
+
+        // new jump
+        if(vertical > 0)
+        {
+            animator.SetBool("Jump", true);
+        } else
+        {
+            animator.SetBool("Jump", false);
+        }
 
         bool isCrouching = false;
         if (Input.GetKey(KeyCode.LeftControl))
