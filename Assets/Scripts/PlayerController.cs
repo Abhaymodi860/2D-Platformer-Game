@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private ScoreController scoreController;
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private float speed;
     [SerializeField] private float jump;
@@ -18,7 +20,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
 
         // moving vertical
-        if(vertical > 0)
+        if (vertical > 0)
         {
             rb2d.AddForce(new Vector2(0f, jump), ForceMode2D.Impulse);
         }
@@ -61,20 +63,21 @@ public class PlayerController : MonoBehaviour
         }
         transform.localScale = scale;
 
-       /* 
-        * bool isJumping = false;
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumping = true;
-        }
-        animator.SetBool("Jump", isJumping);
-       */
+        /* 
+         * bool isJumping = false;
+         if (Input.GetKeyDown(KeyCode.Space))
+         {
+             isJumping = true;
+         }
+         animator.SetBool("Jump", isJumping);
+        */
 
         // new jump
-        if(vertical > 0)
+        if (vertical > 0)
         {
             animator.SetBool("Jump", true);
-        } else
+        }
+        else
         {
             animator.SetBool("Jump", false);
         }
@@ -85,5 +88,11 @@ public class PlayerController : MonoBehaviour
             isCrouching = true;
         }
         animator.SetBool("Crouch", isCrouching);
+    }
+
+    public void PickUpKey()
+    {
+        Debug.Log("Player Picked the key");
+        scoreController.IncreaseScore(10);
     }
 }
