@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator animator;
-    private Rigidbody2D rb2d;
-    public float speed;
-    public float jump;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Rigidbody2D rb2d;
+    [SerializeField] private float speed;
+    [SerializeField] private float jump;
 
     private void Awake()
     {
-        Debug.Log("Player Controller Awake");
+        // Debug.Log("Player Controller Awake");
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
 
@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour
 
     void PlayeMovementAnimation(float horizontal, float vertical)
     {
-       
-
         animator.SetFloat("Speed", Mathf.Abs(horizontal));
 
         Vector3 scale = transform.localScale;
