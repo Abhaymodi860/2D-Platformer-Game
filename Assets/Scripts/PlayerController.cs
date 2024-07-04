@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private float speed;
     [SerializeField] private float jump;
+    
+    private bool isCrouching = false;
 
     private void Awake()
     {
@@ -82,12 +84,28 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Jump", false);
         }
 
-        bool isCrouching = false;
-        if (Input.GetKey(KeyCode.LeftControl))
+        
+        //if(Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            //animator.SetBool("Crouch", true);
             isCrouching = true;
+           
+
         }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            Debug.Log("GET KEY UP");
+            isCrouching = false;
+            Debug.Log("isCouching false");
+           
+            //animator.SetBool("Crouch", false);
+            //animator.SetTrigger("Idle");
+        }
+        //else {}
         animator.SetBool("Crouch", isCrouching);
+
+       
     }
 
     public void PickUpKey()
