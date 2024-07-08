@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -112,5 +113,21 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Player Picked the key");
         scoreController.IncreaseScore(10);
+    }
+
+    public void KillPlayer()
+    {
+        Debug.Log("Player Killed by Enemy");
+        //Destroy(gameObject);
+        // play the death animation
+
+        // Reset entire level
+        ReloadLevel();
+
+    }
+
+    private void ReloadLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 }
