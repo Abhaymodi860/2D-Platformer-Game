@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private float speed;
     [SerializeField] private float jump;
-    
+    [SerializeField] private PlayerHealth playerHealth;
+
     private bool isCrouching = false;
 
     private void Awake()
@@ -115,6 +116,7 @@ public class PlayerController : MonoBehaviour
         scoreController.IncreaseScore(10);
     }
 
+    /*
     public void KillPlayer()
     {
         Debug.Log("Player Killed by Enemy");
@@ -124,6 +126,16 @@ public class PlayerController : MonoBehaviour
         // Reset entire level
         ReloadLevel();
 
+    }
+     */
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<EnemyController>() != null)
+        {
+            PlayerHealth playerHealth = GetComponent<PlayerHealth>();
+            playerHealth.TakeDamage();
+        }
     }
 
     private void ReloadLevel()

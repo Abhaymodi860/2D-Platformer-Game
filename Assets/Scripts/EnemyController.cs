@@ -8,8 +8,8 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerController>() != null)
         {
-            PlayerController playercontroller = collision.gameObject.GetComponent<PlayerController>();
-            playercontroller.KillPlayer();
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            playerHealth.TakeDamage();
         }
     }
 }
