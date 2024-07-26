@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        // Debug.Log("Player Controller Awake");
+        // Debug.Log("Player Controller");
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
 
