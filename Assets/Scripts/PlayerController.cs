@@ -12,8 +12,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jump;
     [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private Rigidbody2D playerRigidbody;
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private SpriteRenderer[] hearts;
+
+    [SerializeField] private GameObject deathUIPanel;
 
     private bool isCrouching = false;
+
+    private int health;
+    private Camera mainCamera;
+
+    private bool isDead = false;
 
     private void Awake()
     {
@@ -24,7 +34,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = hearts.Length;
 
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -116,7 +128,7 @@ public class PlayerController : MonoBehaviour
         scoreController.IncreaseScore(10);
     }
 
-    /*
+    
     public void KillPlayer()
     {
         Debug.Log("Player Killed by Enemy");
@@ -127,8 +139,8 @@ public class PlayerController : MonoBehaviour
         ReloadLevel();
 
     }
-     */
 
+    /*
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<EnemyController>() != null)
@@ -137,9 +149,44 @@ public class PlayerController : MonoBehaviour
             playerHealth.TakeDamage();
         }
     }
+    */
 
     private void ReloadLevel()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void DecreaseHealth()
+    {
+        health--;
+
+        HandleHealthUI();
+        if (health <= 0)
+        {
+            PlayDeathAnimation();
+            PlayerDeath();
+        }
+    }
+
+    public void PlayerDeath()
+    {
+        isDead = true;
+        mainCamera.transform.parent = null;
+        deathUIPanel.gameObject.SetActive(true);
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezePosition;
+        ReloadLevel();
+    }
+
+    public void PlayDeathAnimation()
+    {
+        playerAnimator.SetTrigger("Die");
+    }
+
+    public void HandleHealthUI()
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            hearts[i].color = (i < health) ? Color.red : Color.black;
+        }
     }
 }
